@@ -44,14 +44,23 @@ const io = new Server(httpServer, {
 
 app.set("io", io); // using set method to mount the `io` instance on the app to avoid usage of `global`
 
-// global middlewares
+// global middlewares // i build my cors
+// app.use(
+//   cors({
+//     origin:
+//       process.env.CORS_ORIGIN === "*"
+//         ? "*" // This might give CORS error for some origins due to credentials set to true
+//         : process.env.CORS_ORIGIN?.split(","), // For multiple cors origin for production. Refer https://github.com/hiteshchoudhary/apihub/blob/a846abd7a0795054f48c7eb3e71f3af36478fa96/.env.sample#L12C1-L12C12
+//     credentials: true,
+//   })
+// );
 app.use(
   cors({
-    origin:
-      process.env.CORS_ORIGIN === "*"
-        ? "*" // This might give CORS error for some origins due to credentials set to true
-        : process.env.CORS_ORIGIN?.split(","), // For multiple cors origin for production. Refer https://github.com/hiteshchoudhary/apihub/blob/a846abd7a0795054f48c7eb3e71f3af36478fa96/.env.sample#L12C1-L12C12
+    origin: "http://localhost:5173",
     credentials: true,
+    methods: ["GET", "POST", "DELETE", "OPTIONS", "PUT"],
+    allowedHeaders: ["Content-Type", "Authorization", "Accept"],
+    exposedHeaders: ["Set-Cookie", "*"],
   })
 );
 

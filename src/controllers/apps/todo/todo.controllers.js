@@ -50,10 +50,21 @@ const getTodoById = asyncHandler(async (req, res) => {
 
 const createTodo = asyncHandler(async (req, res) => {
   const { title, description } = req.body;
+  if (!title || !description) {
+    return res
+      .status(400)
+      .json(new ApiResponse(400, "Todo not created succesfully"));
+  }
   const todo = await Todo.create({
     title,
     description,
   });
+  if (!todo) {
+    return res
+      .status(400)
+      .json(new ApiResponse(400, "Todo not created succesfully"));
+  }
+  console.log(todo);
 
   return res
     .status(201)
@@ -98,11 +109,10 @@ const toggleTodoDoneStatus = asyncHandler(async (req, res) => {
     .status(200)
     .json(
       new ApiResponse(
-    200,
-    todo,
-    `Todo marked ${todo.isComplete ? "done" : "undone"}`
-    )
-
+        200,
+        todo,
+        `Todo marked ${todo.isComplete ? "done" : "undone"}`
+      )
     );
 });
 

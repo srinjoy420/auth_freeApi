@@ -1,4 +1,5 @@
-import catsJson from "../../json/cats.json" assert { type: "json" };
+// import catsJson from "../../json/cats.json" assert { type: "json" };
+
 import { filterObjectKeys, getPaginatedPayload } from "../../utils/helpers.js";
 import { ApiError } from "../../utils/ApiError.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
