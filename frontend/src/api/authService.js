@@ -27,5 +27,9 @@ const authService = {
     const response = await axiosInstance.get("/users/current-user");
     return response.data;
   },
+  emailVerification: async (userdata) => {
+    const response = await axiosInstance.get(`/users/verify-email/${token}`);
+    return response.data;
+  },
 };
 export default authService;

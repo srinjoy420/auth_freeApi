@@ -32,7 +32,7 @@ const About = () => {
       }
     };
 
-    fetchUser(); // ✅ This was missing in the right place
+    fetchUser(); 
   }, []);
 
   if (loading) return <div className="p-4 text-center">Loading...</div>;
