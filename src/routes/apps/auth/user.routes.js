@@ -15,6 +15,7 @@ import {
   resetForgottenPassword,
   updateUserAvatar,
   verifyEmail,
+  googlelogin,
 } from "../../../controllers/apps/auth/user.controllers.js";
 import {
   verifyJWT,
@@ -81,30 +82,32 @@ router
   );
 
 // SSO routes
-router.route("/google").get(
-  passport.authenticate("google", {
-    scope: ["profile", "email"],
-  }),
-  (req, res) => {
-    res.send("redirecting to google...");
-  }
-);
+// router.route("/google").get(
+//   passport.authenticate("google", {
+//     scope: ["profile", "email"],
+//   }),
+//   (req, res) => {
+//     res.send("redirecting to google...");
+//   }
+// );
 
-router.route("/github").get(
-  passport.authenticate("github", {
-    scope: ["profile", "email"],
-  }),
-  (req, res) => {
-    res.send("redirecting to github...");
-  }
-);
+// router.route("/github").get(
+//   passport.authenticate("github", {
+//     scope: ["profile", "email"],
+//   }),
+//   (req, res) => {
+//     res.send("redirecting to github...");
+//   }
+// );
 
-router
-  .route("/google/callback")
-  .get(passport.authenticate("google"), handleSocialLogin);
+// router
+//   .route("/google/callback")
+//   .get(passport.authenticate("google"), handleSocialLogin);
 
-router
-  .route("/github/callback")
-  .get(passport.authenticate("github"), handleSocialLogin);
+// router
+//   .route("/github/callback")
+//   .get(passport.authenticate("github"), handleSocialLogin);
+
+router.route("/google").get(googlelogin);
 
 export default router;

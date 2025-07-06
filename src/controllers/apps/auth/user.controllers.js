@@ -15,6 +15,9 @@ import {
   forgotPasswordMailgenContent,
   sendEmail,
 } from "../../../utils/mail.js";
+import { oauth2Client } from "../../../utils/googleConfig.js";
+import axios from "axios";
+import { ne } from "@faker-js/faker";
 
 const generateAccessAndRefreshTokens = async (userId) => {
   try {
@@ -499,6 +502,53 @@ const updateUserAvatar = asyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponse(200, updatedUser, "Avatar updated successfully"));
 });
+const googlelogin = async (req, res) => {
+  try {
+    const { code } = req.query;
+    const googleRes = await oauth2Client.getToken(code);
+    oauth2Client.setCredentials(googleRes.tokens);
+
+    const userRes = await axios.get(
+      `https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${googleRes.tokens.access_token}`
+    );
+
+    const { email, name, picture } = userRes.data;
+    let user = await User.findOne({ email });
+    if (!user) {
+      user = await User.create({
+        email,
+        username: name,
+        avatar: {
+          url: picture,
+          localPath: "",
+        },
+        isEmailVerified: true,
+        loginType: UserLoginType.GOOGLE,
+        password: crypto.randomBytes(32).toString("hex"),
+      });
+    }
+    const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(
+      user._id
+    );
+    const options = {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+    };
+
+    return res
+      .status(200)
+      .cookie("accessToken", accessToken, options)
+      .cookie("refreshToken", refreshToken, options)
+      .json({
+        message: "Success",
+        user,
+        token: accessToken,
+      });
+  } catch (error) {
+    console.error("Google login failed:", error);
+    throw new ApiError(500, "Google login failed");
+  }
+};
 
 export {
   assignRole,
@@ -514,4 +564,5 @@ export {
   resetForgottenPassword,
   updateUserAvatar,
   verifyEmail,
+  googlelogin,
 };
