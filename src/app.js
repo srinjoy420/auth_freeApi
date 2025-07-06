@@ -56,7 +56,8 @@ app.set("io", io); // using set method to mount the `io` instance on the app to 
 // );
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin:
+      "https://auth-free-27v34yuz5-srinjoys-projects-82fcca08.vercel.app/",
     credentials: true,
     methods: ["GET", "POST", "DELETE", "OPTIONS", "PUT"],
     allowedHeaders: ["Content-Type", "Authorization", "Accept"],

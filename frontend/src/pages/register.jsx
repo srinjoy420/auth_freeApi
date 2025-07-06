@@ -33,22 +33,27 @@ const Register = () => {
     }));
   };
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError("");
 
     try {
+      // Attempt to sign up the user
       console.log("Trying to sign up...");
       const res = await authService.register(formData);
       console.log("Signup response:", res);
 
       if (res.success) {
+        // If the signup was successful, navigate to the login page
         navigate("/login");
       } else {
+        // If the signup failed, show an error message
         setError(res.message || "Signup failed");
       }
     } catch (error) {
+      // If an error occurred while attempting to sign up, show an error message
       console.log("Signup error:", error);
       const message =
         error?.response?.data?.message ||
@@ -56,9 +61,11 @@ const Register = () => {
         "Signup failed due to an unknown error";
       setError(message);
     } finally {
+      // Set the loading state to false, regardless of whether the signup succeeded or failed
       setLoading(false);
     }
   };
+/*******  9251b1e0-25df-478d-8c8c-ea8422e8bd9b  *******/
 
   return (
     <Card className="w-full max-w-sm">
