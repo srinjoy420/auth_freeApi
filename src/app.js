@@ -56,7 +56,7 @@ app.set("io", io); // using set method to mount the `io` instance on the app to 
 // );
 app.use(
   cors({
-    origin: "https://auth-free-api.vercel.app/",
+    origin: "https://auth-free-api.vercel.app",
     credentials: true,
     methods: ["GET", "POST", "DELETE", "OPTIONS", "PUT"],
     allowedHeaders: ["Content-Type", "Authorization", "Accept"],
